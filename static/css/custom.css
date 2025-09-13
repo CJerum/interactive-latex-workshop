@@ -1,0 +1,297 @@
+/**
+ * Custom CSS for Interactive LaTeX Workshop Slides
+ */
+
+/* Reveal.js customizations */
+.reveal {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+        color: #2c3e50;
+}
+
+/* LaTeX editor enhancements */
+/* Keep editor container minimal; main styling is inline in index.html */
+.latex-editor {
+        background: white;
+        border-radius: 0;
+        padding: 0;
+        margin: 0;
+        box-shadow: none;
+}
+
+.latex-editor textarea {
+        font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Consolas', monospace;
+        line-height: 1.5;
+        background: white;
+        border: none;
+}
+
+.latex-editor textarea:focus {
+        outline: none;
+        border-color: #2e8b57;
+        box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.1);
+}
+
+/* Button styling */
+.compile-btn {
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border-radius: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 13px;
+}
+
+.compile-btn:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(46, 139, 87, 0.3);
+}
+
+.compile-btn:active {
+        transform: translateY(0);
+}
+
+/* Output area styling */
+.latex-output {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border: 2px dashed #dee2e6;
+        transition: all 0.3s ease;
+        min-height: 100px;
+        max-height: 60vh;
+        overflow-y: auto;
+}
+
+/* Custom scrollbar for LaTeX output areas */
+.latex-output::-webkit-scrollbar {
+        width: 8px;
+}
+
+.latex-output::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+}
+
+.latex-output::-webkit-scrollbar-thumb {
+        background: rgba(46, 139, 87, 0.6);
+        border-radius: 4px;
+}
+
+.latex-output::-webkit-scrollbar-thumb:hover {
+        background: rgba(46, 139, 87, 0.8);
+}
+
+.latex-output:has(img) {
+        border-style: solid;
+        border-color: #28a745;
+        background: white;
+}
+
+.latex-output img {
+        border-radius: 4px;
+        transition: transform 0.3s ease;
+        width: 100% !important;
+        height: auto !important;
+}
+
+.latex-output img:hover {
+        transform: scale(1.02);
+        cursor: zoom-in;
+}
+
+/* Error message styling */
+.error-message {
+        border-left: 4px solid #dc3545;
+        animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+        from {
+                opacity: 0;
+                transform: translateY(-10px);
+        }
+
+        to {
+                opacity: 1;
+                transform: translateY(0);
+        }
+}
+
+/* Status indicator animations */
+.status-indicator {
+        transition: all 0.3s ease;
+        animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+        0%,
+        100% {
+                opacity: 1;
+        }
+
+        50% {
+                opacity: 0.7;
+        }
+}
+
+.status-ready {
+        animation: none !important;
+}
+
+/* Code syntax highlighting overrides */
+pre[class*="language-"] {
+        background: #f8f9fa !important;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+        font-size: 14px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+        .latex-editor textarea {
+                height: 150px;
+                font-size: 12px;
+        }
+
+        .latex-controls {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+        }
+
+        .compile-btn {
+                width: 100%;
+                padding: 12px;
+        }
+
+        .latex-output {
+                min-height: 80px;
+        }
+}
+
+/* Slide-specific styling */
+.reveal .slides section {
+        text-align: left;
+}
+
+.reveal .slides section h1,
+.reveal .slides section h2,
+.reveal .slides section h3 {
+        text-align: center;
+}
+
+/* Make only the latex-output areas scrollable when needed */
+
+/* Navigation hints */
+.reveal .controls {
+        color: #2e8b57;
+}
+
+.reveal .progress {
+        color: #2e8b57;
+}
+
+/* Accessibility improvements */
+.compile-btn:focus {
+        outline: 2px solid #2e8b57;
+        outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+
+        .latex-controls,
+        .reveal .controls,
+        .reveal .progress {
+                display: none !important;
+        }
+
+        .latex-output {
+                border: 1px solid #ddd;
+                break-inside: avoid;
+        }
+}
+
+/* Custom utility classes */
+.text-center {
+        text-align: center;
+}
+
+.text-small {
+        font-size: 0.9em;
+}
+
+.text-muted {
+        color: #6c757d;
+}
+
+.mt-2 {
+        margin-top: 1rem;
+}
+
+.mb-2 {
+        margin-bottom: 1rem;
+}
+
+.p-2 {
+        padding: 1rem;
+}
+
+/* LaTeX-specific helper classes */
+.latex-tip {
+        background: #e3f2fd;
+        border-left: 4px solid #2196f3;
+        padding: 10px 15px;
+        margin: 15px 0;
+        border-radius: 0 4px 4px 0;
+        font-size: 0.9em;
+}
+
+.latex-warning {
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 10px 15px;
+        margin: 15px 0;
+        border-radius: 0 4px 4px 0;
+        font-size: 0.9em;
+}
+
+/* Enhance table styling in slides */
+.reveal table {
+        margin: auto;
+        border-collapse: collapse;
+        border-spacing: 0;
+}
+
+.reveal table th,
+.reveal table td {
+        text-align: left;
+        padding: 0.4em 0.8em;
+        border-bottom: 1px solid #ddd;
+}
+
+.reveal table th {
+        font-weight: bold;
+        background: #f8f9fa;
+}
+
+/* Loading animation */
+.loading {
+        animation: fadeInOut 1.5s ease-in-out infinite;
+}
+
+@keyframes fadeInOut {
+
+        0%,
+        100% {
+                opacity: 0.7;
+        }
+
+        50% {
+                opacity: 1;
+        }
+}

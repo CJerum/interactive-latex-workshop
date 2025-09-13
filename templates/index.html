@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Interactive LaTeX Workshop Slides</title>
+
+        <!-- Reveal.js CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/reveal.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/theme/white.css">
+
+        <!-- CodeMirror for LaTeX syntax highlighting -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/elegant.css">
+
+        <!-- Prism.js for syntax highlighting -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css">
+        <link rel="stylesheet"
+                href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="static/css/custom.css">
+
+        <style>
+                /* Compact header design */
+                .reveal h1 { font-size: 1.8em; margin: 0.2em 0; }
+                .reveal h2 { font-size: 1.4em; margin: 0.3em 0; }
+                .reveal h3 { font-size: 1.2em; margin: 0.2em 0; }
+                
+                /* Maximize screen usage */
+                .latex-workshop-container {
+                        display: flex;
+                        gap: 12px;
+                        height: calc(100vh - 110px);
+                        margin: 0 20px; /* use more horizontal space */
+                        position: relative;
+                        max-width: none; /* allow full width usage */
+                }
+
+                .latex-editor-panel {
+                        flex: 1;
+                        display: flex;
+                        flex-direction: column;
+                        padding: 8px;
+                        min-height: 0; /* allow children to shrink */
+                        overflow: hidden;
+                }
+                .latex-output-panel {
+                        flex: 1;
+                        display: flex;
+                        flex-direction: column;
+                        min-height: 0;
+                        overflow: hidden;
+                        position: relative;
+                }
+
+                /* Floating controls */
+                /* Inline controls instead of floating */
+                .latex-controls {
+                        background: #f8f9fa;
+                        border-bottom: 1px solid #ddd;
+                        padding: 4px 8px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        gap: 8px;
+                        font-size: 10px;
+                        border-radius: 8px 8px 0 0;
+                        flex-shrink: 0;
+                }
+
+                .latex-controls .help-text {
+                        font-size: 10px !important;
+                        color: #666;
+                        line-height: 1.2;
+                        margin: 0;
+                        font-weight: 400;
+                        flex-grow: 1;
+                        text-align: right;
+                }                /* CodeMirror editor styling */
+                .latex-editor {
+                        flex: 1 1 auto;
+                        border: 2px solid #ddd;
+                        border-radius: 0 0 8px 8px;
+                        border-top: none;
+                        overflow: hidden;
+                        background: white;
+                        display: flex;
+                        flex-direction: column;
+                        min-height: 0; /* allow textarea to shrink inside */
+                        padding: 0; /* ensure CodeMirror can fill */
+                        position: relative; /* for overlay highlighter */
+                }
+
+                /* Fallback textarea styling - used if CodeMirror fails to load */
+                .latex-editor textarea {
+                        width: 100%;
+                        height: 100%;
+                        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+                        font-size: 13px;
+                        line-height: 18px;
+                        padding: 10px;
+                        border: none;
+                        resize: none;
+                        box-sizing: border-box;
+                        outline: none;
+                        background: white; /* will be made transparent when overlay is active */
+                        color: #333;
+                        word-wrap: break-word;
+                        overflow-wrap: anywhere; /* stronger wrapping for long tokens */
+                        white-space: pre-wrap; /* preserve newlines, wrap long lines */
+                        tab-size: 4;
+                        overflow-x: hidden;
+                        overflow-y: auto;
+                        flex: 1 1 auto;
+                }
+
+                /* Overlay highlighting removed to restore editing */
+
+                /* CodeMirror sizing and wrapping */
+                .latex-editor .CodeMirror {
+                        height: 100%;
+                        width: 100%;
+                        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+                        font-size: 13px;
+                        line-height: 18px;
+                        flex: 1 1 auto;
+                }
+
+                .latex-editor .CodeMirror-scroll {
+                        overflow-x: hidden;
+                }
+
+                /* When lineWrapping is enabled, ensure long tokens wrap nicely */
+                .latex-editor .CodeMirror-wrap pre {
+                        white-space: pre-wrap;
+                        word-break: break-word;
+                        overflow-wrap: anywhere;
+                }
+
+                /* Overleaf-esque light theme tweaks on top of 'elegant' */
+                .cm-s-elegant .cm-comment { color: #6a737d; font-style: italic; }
+                .cm-s-elegant .cm-keyword, .cm-s-elegant .cm-atom { color: #005cc5; }
+                .cm-s-elegant .cm-def, .cm-s-elegant .cm-variable-2 { color: #24292e; }
+                .cm-s-elegant .cm-string { color: #032f62; }
+                .cm-s-elegant .cm-bracket { color: #22863a; }
+                .cm-s-elegant .CodeMirror-activeline-background { background: rgba(46,139,87,0.08); }
+                .cm-s-elegant .CodeMirror-matchingbracket { outline: 1px solid rgba(46,139,87,0.4); color: inherit !important; }
+
+                .latex-editor textarea:focus {
+                        background: white;
+                        box-shadow: inset 0 0 0 2px rgba(46, 139, 87, 0.3);
+                }
+
+                /* Compact compile button */
+                .compile-btn {
+                        background-color: #2e8b57;
+                        color: white;
+                        border: none;
+                        padding: 4px 8px;
+                        border-radius: 3px;
+                        cursor: pointer;
+                        font-size: 10px;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        letter-spacing: 0.3px;
+                        transition: all 0.2s ease;
+                        white-space: nowrap;
+                        flex-shrink: 0;
+                }
+
+                .compile-btn:hover:not(:disabled) {
+                        background-color: #247047;
+                        transform: translateY(-1px);
+                        box-shadow: 0 2px 6px rgba(46, 139, 87, 0.3);
+                }
+
+                .compile-btn:disabled {
+                        background-color: #6c757d;
+                        cursor: not-allowed;
+                        transform: none;
+                        box-shadow: none;
+                }
+
+                .latex-output {
+                        flex: 1 1 auto;
+                        border: 2px solid #ddd;
+                        border-radius: 8px;
+                        padding: 20px;
+                        background-color: #f9f9f9;
+                        display: flex;
+                        align-items: flex-start; /* align to top instead of center */
+                        justify-content: center;
+                        box-sizing: border-box;
+                        overflow-y: auto;
+                        overflow-x: hidden;
+                        min-height: 0;
+                        position: relative;
+                }
+
+                .latex-output img {
+                        width: auto;
+                        height: auto;
+                        max-width: 100%;
+                        max-height: 100%;
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                        border-radius: 4px;
+                        object-fit: contain; /* maintain aspect ratio */
+                }
+
+                /* Panel labels */
+                .panel-label {
+                        position: static;
+                        margin-bottom: 6px;
+                        font-size: 12px;
+                        font-weight: 600;
+                        color: #666;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                }
+
+                .error-message {
+                        color: #d32f2f;
+                        background-color: #ffeaa7;
+                        padding: 10px;
+                        border-radius: 4px;
+                        margin: 10px 0;
+                        white-space: pre-wrap;
+                        font-family: monospace;
+                        font-size: 12px;
+                }
+
+                .loading {
+                        color: #666;
+                        font-style: italic;
+                        font-size: 14px;
+                }
+
+                .status-indicator {
+                        display: inline-block;
+                        width: 12px;
+                        height: 12px;
+                        border-radius: 50%;
+                        margin-right: 8px;
+                }
+
+                .status-ready {
+                        background-color: #4caf50;
+                }
+
+                .status-error {
+                        background-color: #f44336;
+                }
+
+                .status-loading {
+                        background-color: #ff9800;
+                }
+
+                /* Compact slide navigation */
+                .reveal .controls {
+                        bottom: 10px;
+                        right: 10px;
+                }
+
+                .reveal .progress {
+                        height: 2px;
+                }
+
+                /* Mobile responsiveness */
+                @media (max-width: 768px) {
+                        .latex-workshop-container {
+                                flex-direction: column;
+                                height: calc(100vh - 100px);
+                                gap: 5px;
+                        }
+
+                        .latex-editor-panel,
+                        .latex-output-panel {
+                                flex: 1;
+                        }
+
+                        .latex-controls {
+                                position: static;
+                                margin: 5px 0;
+                                justify-content: center;
+                        }
+
+                        .latex-controls .help-text {
+                                display: none;
+                        }
+
+                        .compile-btn {
+                                padding: 8px 16px;
+                                font-size: 14px;
+                        }
+
+                        .panel-label { position: static; margin-bottom: 5px; }
+                }
+        </style>
+</head>
+
+<body>
+        <div class="reveal">
+                <div class="slides">
+                        <!-- Title Slide -->
+                        <section>
+                                <h1>Interactive LaTeX Workshop</h1>
+                                <h3>Building Professional Lab Report Templates</h3>
+                                <p>
+                                        <small>Live compilation and rendering with
+                                                <strong>render_snippet</strong></small>
+                                </p>
+                                <div class="latex-controls">
+                                        <span id="backend-status">
+                                                <span class="status-indicator status-loading"></span>
+                                                Checking backend...
+                                        </span>
+                                </div>
+                        </section>
+
+                        <!-- Module 1: Document Setup -->
+                        <section>
+                                <section>
+                                        <h2>Module 1: Document Setup</h2>
+                                        <p>Let's start with a basic LaTeX document structure</p>
+                                </section>
+
+                                <section>
+                                        <h3>Document Structure</h3>
+                                        <div class="latex-workshop-container">
+                                                <div class="latex-editor-panel">
+                                                        <div class="panel-label">LaTeX Code</div>
+                                                        <div class="latex-editor">
+                                                                <textarea id="editor-1" placeholder="Enter LaTeX code here...">\title{Physics Lab Report: Pendulum Experiment}
+\author{Your Name}
+\date{\today}
+
+\maketitle
+
+\section{Introduction}
+This experiment investigates the relationship between pendulum length and period.</textarea>
+                                                        </div>
+                                                        <div class="latex-controls">
+                                                                <button class="compile-btn"
+                                                                        onclick="compileLatex('editor-1', 'output-1')">
+                                                                        Compile
+                                                                </button>
+                                                                <span class="help-text">Try modifying the title!</span>
+                                                        </div>
+                                                </div>
+                                                <div class="latex-output-panel">
+                                                        <div class="panel-label">Rendered Output</div>
+                                                        <div class="latex-output" id="output-1">
+                                                                <span class="loading">Click "Compile" to see the output</span>
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </section>
+                        </section>
+
+                        <!-- Module 2: Equations -->
+                        <section>
+                                <section>
+                                        <h2>Module 2: Mathematical Equations</h2>
+                                        <p>Physics reports need beautiful equations</p>
+                                </section>
+
+                                <section>
+                                        <h3>Inline and Display Equations</h3>
+                                        <div class="latex-workshop-container">
+                                                <div class="latex-editor-panel">
+                                                        <div class="panel-label">LaTeX Code</div>
+                                                        <div class="latex-controls">
+                                                                <button class="compile-btn"
+                                                                        onclick="compileLatex('editor-2', 'output-2')">
+                                                                        Compile & Render
+                                                                </button>
+                                                                <span>Notice the \SI{}{} command for units!</span>
+                                                        </div>
+                                                        <div class="latex-editor">
+                                                                <textarea
+                                                                        id="editor-2">\section{Theory}
+
+The period of a simple pendulum is given by the equation:
+\begin{equation}
+T = 2\pi\sqrt{\frac{L}{g}}
+\end{equation}
+
+Where $T$ is the period, $L$ is the length, and $g = \SI{9.81}{\meter\per\second\squared}$ is gravitational acceleration.</textarea>
+                                                        </div>
+                                                </div>
+                                                <div class="latex-output-panel">
+                                                        <div class="panel-label">Rendered Output</div>
+                                                        <div class="latex-output" id="output-2">
+                                                                <span class="loading">Click "Compile & Render" to see the output</span>
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </section>
+                        </section>
+
+                        <!-- Module 3: Tables -->
+                        <section>
+                                <section>
+                                        <h2>Module 3: Professional Tables</h2>
+                                        <p>Data presentation with booktabs</p>
+                                </section>
+
+                                <section>
+                                        <h3>Data Table</h3>
+                                        <div class="latex-workshop-container">
+                                                <div class="latex-editor-panel">
+                                                        <div class="panel-label">LaTeX Code</div>
+                                                        <div class="latex-controls">
+                                                                <button class="compile-btn"
+                                                                        onclick="compileLatex('editor-3', 'output-3')">
+                                                                        Compile & Render
+                                                                </button>
+                                                                <span>Professional tables with booktabs package</span>
+                                                        </div>
+                                                        <div class="latex-editor">
+                                                                <textarea id="editor-3">\section{Data}
+
+\begin{table}[h]
+\centering
+\caption{Pendulum measurements}
+\begin{tabular}{@{}ccc@{}}
+\toprule
+Trial & Length (cm) & Period (s) \\
+\midrule
+1 & 20.0 & 0.90 \\
+2 & 40.0 & 1.27 \\
+3 & 60.0 & 1.56 \\
+4 & 80.0 & 1.80 \\
+\bottomrule
+\end{tabular}
+\label{tab:data}
+\end{table}</textarea>
+                                                        </div>
+                                                </div>
+                                                <div class="latex-output-panel">
+                                                        <div class="panel-label">Rendered Output</div>
+                                                        <div class="latex-output" id="output-3">
+                                                                <span class="loading">Click "Compile & Render" to see the output</span>
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </section>
+                        </section>
+
+                        <!-- Module 4: Figures -->
+                        <section>
+                                <section>
+                                        <h2>Module 4: Figures and Graphics</h2>
+                                        <p>Including plots and diagrams</p>
+                                </section>
+
+                                <section>
+                                        <h3>Figure Template</h3>
+                                        <div class="latex-workshop-container">
+                                                <div class="latex-editor-panel">
+                                                        <div class="panel-label">LaTeX Code</div>
+                                                        <div class="latex-controls">
+                                                                <button class="compile-btn"
+                                                                        onclick="compileLatex('editor-4', 'output-4')">
+                                                                        Compile & Render
+                                                                </button>
+                                                                <span>Figure referencing with \ref{}</span>
+                                                        </div>
+                                                        <div class="latex-editor">
+                                                                <textarea id="editor-4">\section{Results}
+
+\begin{figure}[h]
+\centering
+% Placeholder for actual figure
+\framebox[0.8\textwidth][c]{\parbox{0.7\textwidth}{\centering
+\vspace{2cm}
+\textbf{Figure: Period vs Length}\\
+\vspace{0.5cm}
+(Insert your plot here)\\
+\vspace{2cm}
+}}
+\caption{Period as a function of pendulum length. The theoretical curve follows $T \propto \sqrt{L}$.}
+\label{fig:period-length}
+\end{figure}
+
+From Figure~\ref{fig:period-length}, we observe the expected square-root relationship.</textarea>
+                                                        </div>
+                                                </div>
+                                                <div class="latex-output-panel">
+                                                        <div class="panel-label">Rendered Output</div>
+                                                        <div class="latex-output" id="output-4">
+                                                                <span class="loading">Click "Compile & Render" to see the output</span>
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </section>
+                        </section>
+
+                        <!-- Module 5: Analysis -->
+                        <section>
+                                <section>
+                                        <h2>Module 5: Analysis Section</h2>
+                                        <p>Calculations and error analysis</p>
+                                </section>
+
+                                <section>
+                                        <h3>Calculations</h3>
+                                        <div class="latex-workshop-container">
+                                                <div class="latex-editor-panel">
+                                                        <div class="panel-label">LaTeX Code</div>
+                                                        <div class="latex-controls">
+                                                                <button class="compile-btn"
+                                                                        onclick="compileLatex('editor-5', 'output-5')">
+                                                                        Compile & Render
+                                                                </button>
+                                                                <span>Multi-line equations with align</span>
+                                                        </div>
+                                                        <div class="latex-editor">
+                                                                <textarea id="editor-5">\section{Analysis}
+
+\subsection{Gravitational Acceleration Calculation}
+
+Using the pendulum equation, we can solve for $g$:
+\begin{align}
+T &= 2\pi\sqrt{\frac{L}{g}} \\
+T^2 &= 4\pi^2\frac{L}{g} \\
+g &= \frac{4\pi^2 L}{T^2}
+\end{align}
+
+For our \SI{80.0}{\centi\meter} pendulum:
+\begin{equation}
+g = \frac{4\pi^2 \times \SI{0.800}{\meter}}{(\SI{1.80}{\second})^2} = \SI{9.71}{\meter\per\second\squared}
+\end{equation}
+
+This gives a relative error of:
+\begin{equation}
+\text{Error} = \frac{|9.71 - 9.81|}{9.81} \times 100\% = 1.02\%
+\end{equation}</textarea>
+                                                        </div>
+                                                </div>
+                                                <div class="latex-output-panel">
+                                                        <div class="panel-label">Rendered Output</div>
+                                                        <div class="latex-output" id="output-5">
+                                                                <span class="loading">Click "Compile & Render" to see the output</span>
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </section>
+                        </section>
+
+                        <!-- Complete Lab Report Template -->
+                        <section>
+                                <section>
+                                        <h2>Building Your Complete Physics Lab Report Template</h2>
+                                        <p>Let's walk through creating a professional template from start to finish</p>
+                                </section>
+
+                                <section>
+                                        <h3>Step 1: Document Setup</h3>
+                                        <p>First, let's set up the document structure and essential packages</p>
+                                        <div class="latex-workshop-container">
+                                                <div class="latex-editor-panel">
+                                                        <div class="panel-label">Document Preamble</div>
+                                                        <div class="latex-controls">
+                                                                <button class="compile-btn"
+                                                                        onclick="compileLatex('preamble-editor', 'preamble-output')">
+                                                                        Compile & Render
+                                                                </button>
+                                                                <span>Complete preamble setup</span>
+                                                        </div>
+                                                        <div class="latex-editor">
+                                                                <textarea id="preamble-editor">\documentclass[11pt]{article}
+
+% Page layout
+\usepackage[margin=1in]{geometry}
+
+% Math packages
+\usepackage{amsmath,amsfonts,amssymb}
+
+% Units and numbers
+\usepackage{siunitx}
+\sisetup{
+    per-mode=symbol,
+    separate-uncertainty=true,
+    multi-part-units=single
+}
+
+% Tables
+\usepackage{booktabs}
+\usepackage{multirow}
+
+% Figures
+\usepackage{graphicx}
+\usepackage{float}
+
+% References and links
+\usepackage[hidelinks]{hyperref}
+\usepackage{cite}
+
+% Header/footer
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Your Name}
+\lhead{Physics Lab Report}
+\cfoot{\thepage}
+
+\title{Lab Report: Simple Pendulum}
+\author{Your Name \\ Physics 121 \\ University of Rochester}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+This is your complete lab report template!
+
+\end{document}</textarea>
+                                                        </div>
+                                                </div>
+                                                <div class="latex-output-panel">
+                                                        <div class="panel-label">Rendered Output</div>
+                                                        <div class="latex-output" id="preamble-output">
+                                                                <span class="loading">Click "Compile & Render" to see the output</span>
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </section>
+
+                                <section>
+                                        <h3>Step 2: Abstract and Introduction</h3>
+                                        <p>Every lab report needs a concise abstract and introduction</p>
+                                        <div class="latex-workshop-container">
+                                                <div class="latex-editor-panel">
+                                                        <div class="panel-label">Abstract Section</div>
+                                                        <div class="latex-controls">
+                                                                <button class="compile-btn"
+                                                                        onclick="compileLatex('abstract-editor', 'abstract-output')">
+                                                                        Compile & Render
+                                                                </button>
+                                                                <span>Professional abstract format</span>
+                                                        </div>
+                                                        <div class="latex-editor">
+                                                                <textarea id="abstract-editor">\begin{abstract}
+In this experiment, we investigated the relationship between pendulum length and period to determine the local acceleration due to gravity. We measured the period of oscillation for pendulums of varying lengths (\SIrange{20}{80}{\centi\meter}) and fit the data to the theoretical model $T = 2\pi\sqrt{L/g}$. Our measured value of $g = \SI{9.71 \pm 0.15}{\meter\per\second\squared}$ agrees with the accepted value within experimental uncertainty, demonstrating the validity of the simple pendulum model for small-angle oscillations.
+\end{abstract}
+
+\section{Introduction}
+
+The simple pendulum is a fundamental system in classical mechanics, consisting of a point mass suspended by a massless string of length $L$. For small angular displacements ($\theta < 15°$), the period of oscillation is given by:
+
+\begin{equation}
+T = 2\pi\sqrt{\frac{L}{g}}
+\label{eq:pendulum}
+\end{equation}
+
+where $T$ is the period, $L$ is the length of the pendulum, and $g$ is the local acceleration due to gravity.
+
+The objective of this experiment is to:
+\begin{enumerate}
+    \item Verify the relationship between period and length
+    \item Determine the local value of gravitational acceleration
+    \item Assess the validity of the small-angle approximation
+\end{enumerate}</textarea>
+                                                        </div>
+                                                </div>
+                                                <div class="latex-output-panel">
+                                                        <div class="panel-label">Rendered Output</div>
+                                                        <div class="latex-output" id="abstract-output">
+                                                                <span class="loading">Click "Compile & Render" to see the output</span>
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </section>
+
+                                <section>
+                                        <h3>Step 3: Experimental Setup</h3>
+                                        <p>Describe your experimental apparatus and procedure</p>
+                                        <div class="latex-workshop-container">
+                                                <div class="latex-editor-panel">
+                                                        <div class="panel-label">Methods Section</div>
+                                                        <div class="latex-controls">
+                                                                <button class="compile-btn"
+                                                                        onclick="compileLatex('methods-editor', 'methods-output')">
+                                                                        Compile & Render
+                                                                </button>
+                                                                <span>Detailed experimental description</span>
+                                                        </div>
+                                                        <div class="latex-editor">
+                                                                <textarea id="methods-editor">\section{Experimental Setup and Procedure}
+
+\subsection{Apparatus}
+The experimental setup consisted of:
+\begin{itemize}
+    \item String of negligible mass
+    \item Steel bob of mass $m = \SI{50.0 \pm 0.1}{\gram}$
+    \item Meter stick with \SI{1}{\milli\meter} resolution
+    \item Digital stopwatch with \SI{0.01}{\second} resolution
+    \item Protractor for angle measurement
+    \item Ring stand and clamp assembly
+\end{itemize}
+
+\subsection{Procedure}
+\begin{enumerate}
+    \item The pendulum was suspended from a fixed support using a ring stand
+    \item The length $L$ was measured from the pivot point to the center of mass of the bob
+    \item Five different lengths were tested: \SIlist{20.0;30.0;40.0;60.0;80.0}{\centi\meter}
+    \item For each length, the bob was displaced by approximately \SI{10}{\degree} from vertical
+    \item The time for 10 complete oscillations was measured and repeated 5 times
+    \item The period was calculated as $T = t_{10}/10$ for each trial
+\end{enumerate}
+
+\subsection{Data Analysis}
+The relationship in Equation~\ref{eq:pendulum} can be linearized by squaring both sides:
+\begin{equation}
+T^2 = \frac{4\pi^2}{g} L
+\label{eq:linear}
+\end{equation}
+
+A plot of $T^2$ vs. $L$ should yield a straight line with slope $m = 4\pi^2/g$, allowing us to determine $g$.</textarea>
+                                                        </div>
+                                                </div>
+                                                <div class="latex-output-panel">
+                                                        <div class="panel-label">Rendered Output</div>
+                                                        <div class="latex-output" id="methods-output">
+                                                                <span class="loading">Click "Compile & Render" to see the output</span>
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </section>
+
+                                <section>
+                                        <h3>Step 4: Data Presentation</h3>
+                                        <p>Professional data tables with uncertainties</p>
+                                        <div class="latex-workshop-container">
+                                                <div class="latex-editor-panel">
+                                                        <div class="panel-label">Data Tables</div>
+                                                        <div class="latex-controls">
+                                                                <button class="compile-btn"
+                                                                        onclick="compileLatex('data-editor', 'data-output')">
+                                                                        Compile & Render
+                                                                </button>
+                                                                <span>Tables with uncertainties</span>
+                                                        </div>
+                                                        <div class="latex-editor">
+                                                                <textarea id="data-editor">\section{Results}
+
+\subsection{Raw Data}
+Table~\ref{tab:raw-data} shows the measured periods for each pendulum length. Each period represents the average of five trials, with uncertainties calculated as the standard deviation of the mean.
+
+\begin{table}[H]
+\centering
+\caption{Measured periods for different pendulum lengths}
+\label{tab:raw-data}
+\begin{tabular}{@{}cccc@{}}
+\toprule
+Length & Period & $T^2$ & Uncertainty \\
+$L$ (\si{\centi\meter}) & $T$ (\si{\second}) & $T^2$ (\si{\second\squared}) & $\sigma_T$ (\si{\second}) \\
+\midrule
+$20.0 \pm 0.1$ & $0.898 \pm 0.012$ & $0.806 \pm 0.022$ & $0.012$ \\
+$30.0 \pm 0.1$ & $1.101 \pm 0.008$ & $1.212 \pm 0.018$ & $0.008$ \\
+$40.0 \pm 0.1$ & $1.271 \pm 0.015$ & $1.616 \pm 0.038$ & $0.015$ \\
+$60.0 \pm 0.1$ & $1.556 \pm 0.011$ & $2.421 \pm 0.034$ & $0.011$ \\
+$80.0 \pm 0.1$ & $1.798 \pm 0.009$ & $3.233 \pm 0.032$ & $0.009$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Linear Regression Analysis}
+A linear fit of $T^2$ vs. $L$ yields:
+\begin{align}
+\text{Slope} &= \SI{4.023 \pm 0.074}{\second\squared\per\meter} \\
+\text{Intercept} &= \SI{-0.012 \pm 0.031}{\second\squared} \\
+R^2 &= 0.9987
+\end{align}</textarea>
+                                                        </div>
+                                                </div>
+                                                <div class="latex-output-panel">
+                                                        <div class="panel-label">Rendered Output</div>
+                                                        <div class="latex-output" id="data-output">
+                                                                <span class="loading">Click "Compile & Render" to see the output</span>
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </section>
+
+                                <section>
+                                        <h3>Step 5: Results and Analysis</h3>
+                                        <p>Calculate results with proper uncertainty propagation</p>
+                                        <div class="latex-workshop-container">
+                                                <div class="latex-editor-panel">
+                                                        <div class="panel-label">Analysis Section</div>
+                                                        <div class="latex-controls">
+                                                                <button class="compile-btn"
+                                                                        onclick="compileLatex('analysis-editor', 'analysis-output')">
+                                                                        Compile & Render
+                                                                </button>
+                                                                <span>Uncertainty calculation</span>
+                                                        </div>
+                                                        <div class="latex-editor">
+                                                                <textarea id="analysis-editor">\subsection{Determination of Gravitational Acceleration}
+
+From the linear relationship in Equation~\ref{eq:linear}, we can solve for $g$:
+\begin{equation}
+g = \frac{4\pi^2}{\text{slope}} = \frac{4\pi^2}{\SI{4.023}{\second\squared\per\meter}}
+\end{equation}
+
+\begin{equation}
+g = \SI{9.81}{\meter\per\second\squared}
+\end{equation}
+
+\subsection{Uncertainty Analysis}
+The uncertainty in $g$ is calculated using error propagation:
+\begin{equation}
+\sigma_g = g \cdot \frac{\sigma_{\text{slope}}}{\text{slope}} = \SI{9.81}{\meter\per\second\squared} \cdot \frac{\SI{0.074}{\second\squared\per\meter}}{\SI{4.023}{\second\squared\per\meter}}
+\end{equation}
+
+\begin{equation}
+\sigma_g = \SI{0.18}{\meter\per\second\squared}
+\end{equation}
+
+Therefore, our experimental result is:
+\begin{equation}
+\boxed{g = \SI{9.81 \pm 0.18}{\meter\per\second\squared}}
+\end{equation}
+
+\subsection{Comparison with Accepted Value}
+The accepted value of gravitational acceleration in Rochester, NY is $g_{\text{accepted}} = \SI{9.8036}{\meter\per\second\squared}$.
+
+The relative error is:
+\begin{equation}
+\text{Relative Error} = \frac{|g_{\text{measured}} - g_{\text{accepted}}|}{g_{\text{accepted}}} \times 100\% = \frac{|\SI{9.81}{\meter\per\second\squared} - \SI{9.8036}{\meter\per\second\squared}|}{\SI{9.8036}{\meter\per\second\squared}} \times 100\% = 0.07\%
+\end{equation}
+
+Our result agrees excellently with the accepted value, well within our experimental uncertainty.</textarea>
+                                                        </div>
+                                                </div>
+                                                <div class="latex-output-panel">
+                                                        <div class="panel-label">Rendered Output</div>
+                                                        <div class="latex-output" id="analysis-output">
+                                                                <span class="loading">Click "Compile & Render" to see the output</span>
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </section>
+
+                                <section>
+                                        <h3>Step 6: Conclusion and Error Sources</h3>
+                                        <p>Wrap up with conclusions and error analysis</p>
+                                        <div class="latex-workshop-container">
+                                                <div class="latex-editor-panel">
+                                                        <div class="panel-label">Conclusion</div>
+                                                        <div class="latex-controls">
+                                                                <button class="compile-btn"
+                                                                        onclick="compileLatex('conclusion-editor', 'conclusion-output')">
+                                                                        Compile & Render
+                                                                </button>
+                                                                <span>Professional conclusion</span>
+                                                        </div>
+                                                        <div class="latex-editor">
+                                                                <textarea id="conclusion-editor">\section{Discussion}
+
+\subsection{Sources of Error}
+Several factors may have contributed to experimental uncertainty:
+
+\begin{enumerate}
+    \item \textbf{Measurement precision:} The meter stick has finite resolution (\SI{1}{\milli\meter}), contributing to uncertainty in length measurements.
+    
+    \item \textbf{Timing errors:} Human reaction time in stopwatch operation introduces random errors in period measurements.
+    
+    \item \textbf{Air resistance:} Though neglected in the simple pendulum model, air resistance causes slight damping of oscillations.
+    
+    \item \textbf{Finite amplitude:} While we attempted to maintain small angles, deviations from the small-angle approximation ($\sin\theta \approx \theta$) may introduce systematic error.
+    
+    \item \textbf{String elasticity:} The assumption of an inextensible string may not be perfectly valid, causing small variations in effective length.
+\end{enumerate}
+
+\subsection{Improvements}
+Future experiments could be improved by:
+\begin{itemize}
+    \item Using photogate timing systems for more precise period measurements
+    \item Implementing video analysis to ensure consistent amplitude
+    \item Performing experiments in vacuum to eliminate air resistance
+    \item Using longer pendulums to minimize relative uncertainty in length measurements
+\end{itemize}
+
+\section{Conclusion}
+
+This experiment successfully demonstrated the relationship between pendulum length and period described by Equation~\ref{eq:pendulum}. Our measured value of gravitational acceleration, $g = \SI{9.81 \pm 0.18}{\meter\per\second\squared}$, agrees with the accepted value within 0.07\%, validating both our experimental method and the simple pendulum model.
+
+The high correlation coefficient ($R^2 = 0.9987$) confirms the excellent linear relationship between $T^2$ and $L$, supporting the theoretical predictions. This experiment provides valuable insight into classical mechanics and demonstrates the power of careful experimental design and statistical analysis in physics research.
+
+\begin{thebibliography}{9}
+\bibitem{halliday}
+Halliday, D., Resnick, R., \& Walker, J. (2013). \textit{Fundamentals of Physics}. 10th ed. Wiley.
+
+\bibitem{taylor}
+Taylor, J. R. (1997). \textit{An Introduction to Error Analysis: The Study of Uncertainties in Physical Measurements}. 2nd ed. University Science Books.
+\end{thebibliography}</textarea>
+                                                        </div>
+                                                </div>
+                                                <div class="latex-output-panel">
+                                                        <div class="panel-label">Rendered Output</div>
+                                                        <div class="latex-output" id="conclusion-output">
+                                                                <span class="loading">Click "Compile & Render" to see the output</span>
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </section>
+
+                                <section>
+                                        <h3>Step 7: Your Complete Template</h3>
+                                        <p>Now you have all the pieces! Here's how to assemble them in Overleaf:</p>
+                                        
+                                        <h4>🎯 Your Action Plan:</h4>
+                                        <ol>
+                                                <li><strong>Go to Overleaf:</strong> Visit <a href="https://overleaf.com" target="_blank">overleaf.com</a> and create an account</li>
+                                                <li><strong>Start a New Project:</strong> Choose "Blank Project" or "Article" template</li>
+                                                <li><strong>Copy the Preamble:</strong> Use the document setup from Step 1 as your starting point</li>
+                                                <li><strong>Add Each Section:</strong> Copy and adapt the content from Steps 2-6</li>
+                                                <li><strong>Customize:</strong> Replace "Simple Pendulum" with your actual experiment</li>
+                                                <li><strong>Save as Template:</strong> Keep this as your personal physics lab template!</li>
+                                        </ol>
+
+                                        <h4>📋 Essential Sections Checklist:</h4>
+                                        <ul>
+                                                <li>✅ Complete preamble with all necessary packages</li>
+                                                <li>✅ Title page with your information</li>
+                                                <li>✅ Abstract (150-200 words)</li>
+                                                <li>✅ Introduction with objectives</li>
+                                                <li>✅ Experimental setup and procedure</li>
+                                                <li>✅ Data tables with uncertainties</li>
+                                                <li>✅ Analysis with uncertainty propagation</li>
+                                                <li>✅ Discussion of error sources</li>
+                                                <li>✅ Conclusion summarizing findings</li>
+                                                <li>✅ References (if required)</li>
+                                        </ul>
+
+                                        <h4>💡 Pro Tips for Success:</h4>
+                                        <ul>
+                                                <li><strong>Start Early:</strong> LaTeX has a learning curve - give yourself time</li>
+                                                <li><strong>Compile Often:</strong> Check for errors frequently as you build</li>
+                                                <li><strong>Use \label{} and \ref{}:</strong> Let LaTeX handle numbering automatically</li>
+                                                <li><strong>siunitx Package:</strong> Always use \SI{}{} for numbers with units</li>
+                                                <li><strong>Save Versions:</strong> Overleaf tracks changes, but manual saves help too</li>
+                                        </ul>
+                                </section>
+
+                                <section>
+                                        <h2>🎉 Congratulations!</h2>
+                                        <p>You now have the tools to create professional physics lab reports!</p>
+                                        
+                                        <div style="text-align: center; font-size: 1.2em; margin: 2em 0;">
+                                                <p><strong>Remember the key principles:</strong></p>
+                                                <ul style="text-align: left; display: inline-block;">
+                                                        <li>📊 Present data clearly with proper uncertainties</li>
+                                                        <li>🧮 Show all calculations step-by-step</li>
+                                                        <li>📈 Use professional tables and figures</li>
+                                                        <li>🔍 Discuss sources of error honestly</li>
+                                                        <li>✍️ Write clearly and concisely</li>
+                                                        <li>📚 Cite sources appropriately</li>
+                                                </ul>
+                                        </div>
+
+                                        <h3>Next Steps:</h3>
+                                        <ol>
+                                                <li>Practice with your next lab assignment</li>
+                                                <li>Ask questions in office hours</li>
+                                                <li>Share templates with classmates</li>
+                                                <li>Keep building your LaTeX skills!</li>
+                                        </ol>
+
+                                        <p style="margin-top: 2em;"><em>Good luck with your physics lab reports! 🚀</em></p>
+                                </section>
+                        </section>
+                </div>
+        </div>
+
+        <!-- Reveal.js JavaScript -->
+        <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/reveal.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/plugin/notes/notes.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/plugin/markdown/markdown.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/plugin/highlight/highlight.js"></script>
+
+        <!-- CodeMirror for LaTeX syntax highlighting -->
+        <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/stex/stex.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/matchbrackets.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closebrackets.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.js"></script>
+
+        <!-- Prism.js for syntax highlighting -->
+        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+        <script
+                src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+
+        <!-- Custom JavaScript -->
+        <script src="static/js/latex-slides.js"></script>
+
+        <script>
+                // Initialize Reveal.js
+                Reveal.initialize({
+                        hash: true,
+                        controls: true,
+                        progress: true,
+                        center: true,
+                        transition: 'slide',
+                        plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+                });
+
+                // Check backend status on load
+                window.addEventListener('load', function() {
+                        checkBackendStatus();
+                });
+        </script>
+</body>
+
+</html>
