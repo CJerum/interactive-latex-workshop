@@ -311,7 +311,7 @@ document.addEventListener('keydown', function (event) {
                 // Check if a CodeMirror instance is focused
                 for (const [editorId, cm] of Object.entries(codeMirrorInstances)) {
                         if (cm.hasFocus()) {
-                                const outputId = editorId.replace('editor-', 'output-');
+                                const outputId = getOutputIdFromEditor(editorId);
                                 compileLatex(editorId, outputId);
                                 event.preventDefault();
                                 return;
@@ -320,14 +320,30 @@ document.addEventListener('keydown', function (event) {
 
                 // Fallback to textarea check
                 const activeElement = document.activeElement;
-                if (activeElement.tagName === 'TEXTAREA' && activeElement.id.startsWith('editor-')) {
+                if (activeElement.tagName === 'TEXTAREA' && activeElement.closest('.latex-editor')) {
                         const editorId = activeElement.id;
-                        const outputId = editorId.replace('editor-', 'output-');
+                        const outputId = getOutputIdFromEditor(editorId);
                         compileLatex(editorId, outputId);
                         event.preventDefault();
                 }
         }
 });
+
+// Helper function to get output ID from editor ID
+function getOutputIdFromEditor(editorId) {
+        // Handle different naming patterns
+        const outputMappings = {
+                'complete-template': 'complete-output',
+                'preamble-editor': 'preamble-output',
+                'abstract-editor': 'abstract-output',
+                'methods-editor': 'methods-output',
+                'data-editor': 'data-output',
+                'analysis-editor': 'analysis-output',
+                'conclusion-editor': 'conclusion-output'
+        };
+
+        return outputMappings[editorId] || editorId.replace('-editor', '-output');
+}
 
 // Auto-save setup is now handled in initializeCodeMirror
 function setupAutoSave() {

@@ -612,24 +612,24 @@ This gives a relative error of:
                         <section>
                                 <section>
                                         <h2>Building Your Complete Physics Lab Report Template</h2>
-                                        <p>Let's walk through creating a professional template from start to finish</p>
+                                        <p>Here's your complete professional lab report template</p>
                                 </section>
 
                                 <section>
-                                        <h3>Step 1: Document Setup</h3>
-                                        <p>First, let's set up the document structure and essential packages</p>
+                                        <h3>Complete Physics Lab Report Template</h3>
+                                        <p>This template includes everything you need for professional lab reports</p>
                                         <div class="latex-workshop-container">
                                                 <div class="latex-editor-panel">
-                                                        <div class="panel-label">Document Preamble</div>
+                                                        <div class="panel-label">Complete Lab Report Template</div>
                                                         <div class="latex-controls">
                                                                 <button class="compile-btn"
-                                                                        onclick="compileLatex('preamble-editor', 'preamble-output')">
+                                                                        onclick="compileLatex('complete-template', 'complete-output')">
                                                                         Compile & Render
                                                                 </button>
-                                                                <span>Complete preamble setup</span>
+                                                                <span>Professional physics lab report</span>
                                                         </div>
                                                         <div class="latex-editor">
-                                                                <textarea id="preamble-editor">\documentclass[11pt]{article}
+                                                                <textarea id="complete-template">\documentclass[11pt]{article}
 
 % Page layout
 \usepackage[margin=1in]{geometry}
@@ -639,19 +639,10 @@ This gives a relative error of:
 
 % Units and numbers
 \usepackage{siunitx}
-\sisetup{
-    per-mode=symbol,
-    separate-uncertainty=true,
-    multi-part-units=single
-}
+\sisetup{per-mode=symbol, separate-uncertainty=true, multi-part-units=single}
 
-% Tables
-\usepackage{booktabs}
-\usepackage{multirow}
-
-% Figures
-\usepackage{graphicx}
-\usepackage{float}
+% Tables and figures
+\usepackage{booktabs, multirow, graphicx, float}
 
 % References and links
 \usepackage[hidelinks]{hyperref}
@@ -665,21 +656,91 @@ This gives a relative error of:
 \lhead{Physics Lab Report}
 \cfoot{\thepage}
 
-\title{Lab Report: Simple Pendulum}
-\author{Your Name \\ Physics 121 \\ University of Rochester}
+\title{Lab Report: [Your Experiment Title]}
+\author{Your Name \\ Physics [Course Number] \\ University of Rochester}
 \date{\today}
 
 \begin{document}
 \maketitle
 
-This is your complete lab report template!
+\begin{abstract}
+Write a concise 150-200 word summary of your experiment, including the objective, method, key results, and main conclusion. For example: "In this experiment, we investigated [phenomenon] to determine [parameter]. We measured [quantities] using [method] and found [result ± uncertainty]. This agrees with the theoretical value within [percentage] error, validating [theory/model]."
+\end{abstract}
+
+\section{Introduction}
+Provide background theory, relevant equations, and experimental objectives. Include:
+\begin{itemize}
+    \item Physical principles involved
+    \item Key equations with proper numbering
+    \item Specific objectives of your experiment
+\end{itemize}
+
+\section{Experimental Setup and Procedure}
+\subsection{Apparatus}
+List all equipment with specifications:
+\begin{itemize}
+    \item Equipment item with precision/uncertainty
+    \item Measuring instruments with resolution
+\end{itemize}
+
+\subsection{Procedure}
+Numbered steps describing your experimental method:
+\begin{enumerate}
+    \item Step-by-step procedure
+    \item Include important details about measurements
+    \item Note any precautions taken
+\end{enumerate}
+
+\section{Results}
+\subsection{Data Tables}
+Present data clearly with uncertainties:
+
+\begin{table}[H]
+\centering
+\caption{Your data with proper uncertainties}
+\label{tab:data}
+\begin{tabular}{@{}ccc@{}}
+\toprule
+Quantity 1 & Quantity 2 & Calculated Result \\
+[units] & [units] & [units] \\
+\midrule
+$\SI{1.23 \pm 0.01}{}$ & $\SI{4.56 \pm 0.02}{}$ & $\SI{5.79 \pm 0.03}{}$ \\
+$\SI{2.34 \pm 0.01}{}$ & $\SI{5.67 \pm 0.02}{}$ & $\SI{7.90 \pm 0.03}{}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Calculations}
+Show key calculations with uncertainty propagation:
+\begin{equation}
+\text{Final Result} = \SI{[value] \pm [uncertainty]}{[units]}
+\end{equation}
+
+\section{Discussion}
+\subsection{Error Analysis}
+Identify and discuss sources of uncertainty:
+\begin{itemize}
+    \item Systematic errors and their effects
+    \item Random uncertainties in measurements
+    \item Limitations of theoretical model
+\end{itemize}
+
+\subsection{Comparison with Theory}
+Compare your results to accepted values and discuss agreement.
+
+\section{Conclusion}
+Summarize findings, assess whether objectives were met, and suggest improvements.
+
+\begin{thebibliography}{9}
+\bibitem{ref1} Author, A. (Year). \textit{Title}. Publisher.
+\end{thebibliography}
 
 \end{document}</textarea>
                                                         </div>
                                                 </div>
                                                 <div class="latex-output-panel">
                                                         <div class="panel-label">Rendered Output</div>
-                                                        <div class="latex-output" id="preamble-output">
+                                                        <div class="latex-output" id="complete-output">
                                                                 <span class="loading">Click "Compile & Render" to see
                                                                         the output</span>
                                                         </div>
@@ -688,341 +749,12 @@ This is your complete lab report template!
                                 </section>
 
                                 <section>
-                                        <h3>Step 2: Abstract and Introduction</h3>
-                                        <p>Every lab report needs a concise abstract and introduction</p>
-                                        <div class="latex-workshop-container">
-                                                <div class="latex-editor-panel">
-                                                        <div class="panel-label">Abstract Section</div>
-                                                        <div class="latex-controls">
-                                                                <button class="compile-btn"
-                                                                        onclick="compileLatex('abstract-editor', 'abstract-output')">
-                                                                        Compile & Render
-                                                                </button>
-                                                                <span>Professional abstract format</span>
-                                                        </div>
-                                                        <div class="latex-editor">
-                                                                <textarea id="abstract-editor">\begin{abstract}
-In this experiment, we investigated the relationship between pendulum length and period to determine the local acceleration due to gravity. We measured the period of oscillation for pendulums of varying lengths (\SIrange{20}{80}{\centi\meter}) and fit the data to the theoretical model $T = 2\pi\sqrt{L/g}$. Our measured value of $g = \SI{9.71 \pm 0.15}{\meter\per\second\squared}$ agrees with the accepted value within experimental uncertainty, demonstrating the validity of the simple pendulum model for small-angle oscillations.
-\end{abstract}
-
-\section{Introduction}
-
-The simple pendulum is a fundamental system in classical mechanics, consisting of a point mass suspended by a massless string of length $L$. For small angular displacements ($\theta < 15°$), the period of oscillation is given by:
-
-\begin{equation}
-T = 2\pi\sqrt{\frac{L}{g}}
-\label{eq:pendulum}
-\end{equation}
-
-where $T$ is the period, $L$ is the length of the pendulum, and $g$ is the local acceleration due to gravity.
-
-The objective of this experiment is to:
-\begin{enumerate}
-    \item Verify the relationship between period and length
-    \item Determine the local value of gravitational acceleration
-    \item Assess the validity of the small-angle approximation
-\end{enumerate}</textarea>
-                                                        </div>
-                                                </div>
-                                                <div class="latex-output-panel">
-                                                        <div class="panel-label">Rendered Output</div>
-                                                        <div class="latex-output" id="abstract-output">
-                                                                <span class="loading">Click "Compile & Render" to see
-                                                                        the output</span>
-                                                        </div>
-                                                </div>
+                                        <div
+                                                style="display: flex; align-items: center; justify-content: center; height: 100vh;">
+                                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://www.overleaf.com/read/xnnwbdswtcxk#27d9c7"
+                                                        alt="QR Code for Overleaf Template"
+                                                        style="width: 500px; height: 500px;" />
                                         </div>
-                                </section>
-
-                                <section>
-                                        <h3>Step 3: Experimental Setup</h3>
-                                        <p>Describe your experimental apparatus and procedure</p>
-                                        <div class="latex-workshop-container">
-                                                <div class="latex-editor-panel">
-                                                        <div class="panel-label">Methods Section</div>
-                                                        <div class="latex-controls">
-                                                                <button class="compile-btn"
-                                                                        onclick="compileLatex('methods-editor', 'methods-output')">
-                                                                        Compile & Render
-                                                                </button>
-                                                                <span>Detailed experimental description</span>
-                                                        </div>
-                                                        <div class="latex-editor">
-                                                                <textarea
-                                                                        id="methods-editor">\section{Experimental Setup and Procedure}
-
-\subsection{Apparatus}
-The experimental setup consisted of:
-\begin{itemize}
-    \item String of negligible mass
-    \item Steel bob of mass $m = \SI{50.0 \pm 0.1}{\gram}$
-    \item Meter stick with \SI{1}{\milli\meter} resolution
-    \item Digital stopwatch with \SI{0.01}{\second} resolution
-    \item Protractor for angle measurement
-    \item Ring stand and clamp assembly
-\end{itemize}
-
-\subsection{Procedure}
-\begin{enumerate}
-    \item The pendulum was suspended from a fixed support using a ring stand
-    \item The length $L$ was measured from the pivot point to the center of mass of the bob
-    \item Five different lengths were tested: \SIlist{20.0;30.0;40.0;60.0;80.0}{\centi\meter}
-    \item For each length, the bob was displaced by approximately \SI{10}{\degree} from vertical
-    \item The time for 10 complete oscillations was measured and repeated 5 times
-    \item The period was calculated as $T = t_{10}/10$ for each trial
-\end{enumerate}
-
-\subsection{Data Analysis}
-The relationship in Equation~\ref{eq:pendulum} can be linearized by squaring both sides:
-\begin{equation}
-T^2 = \frac{4\pi^2}{g} L
-\label{eq:linear}
-\end{equation}
-
-A plot of $T^2$ vs. $L$ should yield a straight line with slope $m = 4\pi^2/g$, allowing us to determine $g$.</textarea>
-                                                        </div>
-                                                </div>
-                                                <div class="latex-output-panel">
-                                                        <div class="panel-label">Rendered Output</div>
-                                                        <div class="latex-output" id="methods-output">
-                                                                <span class="loading">Click "Compile & Render" to see
-                                                                        the output</span>
-                                                        </div>
-                                                </div>
-                                        </div>
-                                </section>
-
-                                <section>
-                                        <h3>Step 4: Data Presentation</h3>
-                                        <p>Professional data tables with uncertainties</p>
-                                        <div class="latex-workshop-container">
-                                                <div class="latex-editor-panel">
-                                                        <div class="panel-label">Data Tables</div>
-                                                        <div class="latex-controls">
-                                                                <button class="compile-btn"
-                                                                        onclick="compileLatex('data-editor', 'data-output')">
-                                                                        Compile & Render
-                                                                </button>
-                                                                <span>Tables with uncertainties</span>
-                                                        </div>
-                                                        <div class="latex-editor">
-                                                                <textarea id="data-editor">\section{Results}
-
-\subsection{Raw Data}
-Table~\ref{tab:raw-data} shows the measured periods for each pendulum length. Each period represents the average of five trials, with uncertainties calculated as the standard deviation of the mean.
-
-\begin{table}[H]
-\centering
-\caption{Measured periods for different pendulum lengths}
-\label{tab:raw-data}
-\begin{tabular}{@{}cccc@{}}
-\toprule
-Length & Period & $T^2$ & Uncertainty \\
-$L$ (\si{\centi\meter}) & $T$ (\si{\second}) & $T^2$ (\si{\second\squared}) & $\sigma_T$ (\si{\second}) \\
-\midrule
-$20.0 \pm 0.1$ & $0.898 \pm 0.012$ & $0.806 \pm 0.022$ & $0.012$ \\
-$30.0 \pm 0.1$ & $1.101 \pm 0.008$ & $1.212 \pm 0.018$ & $0.008$ \\
-$40.0 \pm 0.1$ & $1.271 \pm 0.015$ & $1.616 \pm 0.038$ & $0.015$ \\
-$60.0 \pm 0.1$ & $1.556 \pm 0.011$ & $2.421 \pm 0.034$ & $0.011$ \\
-$80.0 \pm 0.1$ & $1.798 \pm 0.009$ & $3.233 \pm 0.032$ & $0.009$ \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\subsection{Linear Regression Analysis}
-A linear fit of $T^2$ vs. $L$ yields:
-\begin{align}
-\text{Slope} &= \SI{4.023 \pm 0.074}{\second\squared\per\meter} \\
-\text{Intercept} &= \SI{-0.012 \pm 0.031}{\second\squared} \\
-R^2 &= 0.9987
-\end{align}</textarea>
-                                                        </div>
-                                                </div>
-                                                <div class="latex-output-panel">
-                                                        <div class="panel-label">Rendered Output</div>
-                                                        <div class="latex-output" id="data-output">
-                                                                <span class="loading">Click "Compile & Render" to see
-                                                                        the output</span>
-                                                        </div>
-                                                </div>
-                                        </div>
-                                </section>
-
-                                <section>
-                                        <h3>Step 5: Results and Analysis</h3>
-                                        <p>Calculate results with proper uncertainty propagation</p>
-                                        <div class="latex-workshop-container">
-                                                <div class="latex-editor-panel">
-                                                        <div class="panel-label">Analysis Section</div>
-                                                        <div class="latex-controls">
-                                                                <button class="compile-btn"
-                                                                        onclick="compileLatex('analysis-editor', 'analysis-output')">
-                                                                        Compile & Render
-                                                                </button>
-                                                                <span>Uncertainty calculation</span>
-                                                        </div>
-                                                        <div class="latex-editor">
-                                                                <textarea id="analysis-editor">\subsection{Determination of Gravitational Acceleration}
-
-From the linear relationship in Equation~\ref{eq:linear}, we can solve for $g$:
-\begin{equation}
-g = \frac{4\pi^2}{\text{slope}} = \frac{4\pi^2}{\SI{4.023}{\second\squared\per\meter}}
-\end{equation}
-
-\begin{equation}
-g = \SI{9.81}{\meter\per\second\squared}
-\end{equation}
-
-\subsection{Uncertainty Analysis}
-The uncertainty in $g$ is calculated using error propagation:
-\begin{equation}
-\sigma_g = g \cdot \frac{\sigma_{\text{slope}}}{\text{slope}} = \SI{9.81}{\meter\per\second\squared} \cdot \frac{\SI{0.074}{\second\squared\per\meter}}{\SI{4.023}{\second\squared\per\meter}}
-\end{equation}
-
-\begin{equation}
-\sigma_g = \SI{0.18}{\meter\per\second\squared}
-\end{equation}
-
-Therefore, our experimental result is:
-\begin{equation}
-\boxed{g = \SI{9.81 \pm 0.18}{\meter\per\second\squared}}
-\end{equation}
-
-\subsection{Comparison with Accepted Value}
-The accepted value of gravitational acceleration in Rochester, NY is $g_{\text{accepted}} = \SI{9.8036}{\meter\per\second\squared}$.
-
-The relative error is:
-\begin{equation}
-\text{Relative Error} = \frac{|g_{\text{measured}} - g_{\text{accepted}}|}{g_{\text{accepted}}} \times 100\% = \frac{|\SI{9.81}{\meter\per\second\squared} - \SI{9.8036}{\meter\per\second\squared}|}{\SI{9.8036}{\meter\per\second\squared}} \times 100\% = 0.07\%
-\end{equation}
-
-Our result agrees excellently with the accepted value, well within our experimental uncertainty.</textarea>
-                                                        </div>
-                                                </div>
-                                                <div class="latex-output-panel">
-                                                        <div class="panel-label">Rendered Output</div>
-                                                        <div class="latex-output" id="analysis-output">
-                                                                <span class="loading">Click "Compile & Render" to see
-                                                                        the output</span>
-                                                        </div>
-                                                </div>
-                                        </div>
-                                </section>
-
-                                <section>
-                                        <h3>Step 6: Conclusion and Error Sources</h3>
-                                        <p>Wrap up with conclusions and error analysis</p>
-                                        <div class="latex-workshop-container">
-                                                <div class="latex-editor-panel">
-                                                        <div class="panel-label">Conclusion</div>
-                                                        <div class="latex-controls">
-                                                                <button class="compile-btn"
-                                                                        onclick="compileLatex('conclusion-editor', 'conclusion-output')">
-                                                                        Compile & Render
-                                                                </button>
-                                                                <span>Professional conclusion</span>
-                                                        </div>
-                                                        <div class="latex-editor">
-                                                                <textarea id="conclusion-editor">\section{Discussion}
-
-\subsection{Sources of Error}
-Several factors may have contributed to experimental uncertainty:
-
-\begin{enumerate}
-    \item \textbf{Measurement precision:} The meter stick has finite resolution (\SI{1}{\milli\meter}), contributing to uncertainty in length measurements.
-    
-    \item \textbf{Timing errors:} Human reaction time in stopwatch operation introduces random errors in period measurements.
-    
-    \item \textbf{Air resistance:} Though neglected in the simple pendulum model, air resistance causes slight damping of oscillations.
-    
-    \item \textbf{Finite amplitude:} While we attempted to maintain small angles, deviations from the small-angle approximation ($\sin\theta \approx \theta$) may introduce systematic error.
-    
-    \item \textbf{String elasticity:} The assumption of an inextensible string may not be perfectly valid, causing small variations in effective length.
-\end{enumerate}
-
-\subsection{Improvements}
-Future experiments could be improved by:
-\begin{itemize}
-    \item Using photogate timing systems for more precise period measurements
-    \item Implementing video analysis to ensure consistent amplitude
-    \item Performing experiments in vacuum to eliminate air resistance
-    \item Using longer pendulums to minimize relative uncertainty in length measurements
-\end{itemize}
-
-\section{Conclusion}
-
-This experiment successfully demonstrated the relationship between pendulum length and period described by Equation~\ref{eq:pendulum}. Our measured value of gravitational acceleration, $g = \SI{9.81 \pm 0.18}{\meter\per\second\squared}$, agrees with the accepted value within 0.07\%, validating both our experimental method and the simple pendulum model.
-
-The high correlation coefficient ($R^2 = 0.9987$) confirms the excellent linear relationship between $T^2$ and $L$, supporting the theoretical predictions. This experiment provides valuable insight into classical mechanics and demonstrates the power of careful experimental design and statistical analysis in physics research.
-
-\begin{thebibliography}{9}
-\bibitem{halliday}
-Halliday, D., Resnick, R., \& Walker, J. (2013). \textit{Fundamentals of Physics}. 10th ed. Wiley.
-
-\bibitem{taylor}
-Taylor, J. R. (1997). \textit{An Introduction to Error Analysis: The Study of Uncertainties in Physical Measurements}. 2nd ed. University Science Books.
-\end{thebibliography}</textarea>
-                                                        </div>
-                                                </div>
-                                                <div class="latex-output-panel">
-                                                        <div class="panel-label">Rendered Output</div>
-                                                        <div class="latex-output" id="conclusion-output">
-                                                                <span class="loading">Click "Compile & Render" to see
-                                                                        the output</span>
-                                                        </div>
-                                                </div>
-                                        </div>
-                                </section>
-
-                                <section>
-                                        <h3>Step 7: Your Complete Template</h3>
-                                        <p>Now you have all the pieces! Here's how to assemble them in Overleaf:</p>
-
-                                        <h4>🎯 Your Action Plan:</h4>
-                                        <ol>
-                                                <li><strong>Go to Overleaf:</strong> Visit <a
-                                                                href="https://overleaf.com"
-                                                                target="_blank">overleaf.com</a> and create an account
-                                                </li>
-                                                <li><strong>Start a New Project:</strong> Choose "Blank Project" or
-                                                        "Article" template</li>
-                                                <li><strong>Copy the Preamble:</strong> Use the document setup from Step
-                                                        1 as your starting point</li>
-                                                <li><strong>Add Each Section:</strong> Copy and adapt the content from
-                                                        Steps 2-6</li>
-                                                <li><strong>Customize:</strong> Replace "Simple Pendulum" with your
-                                                        actual experiment</li>
-                                                <li><strong>Save as Template:</strong> Keep this as your personal
-                                                        physics lab template!</li>
-                                        </ol>
-
-                                        <h4>📋 Essential Sections Checklist:</h4>
-                                        <ul>
-                                                <li>✅ Complete preamble with all necessary packages</li>
-                                                <li>✅ Title page with your information</li>
-                                                <li>✅ Abstract (150-200 words)</li>
-                                                <li>✅ Introduction with objectives</li>
-                                                <li>✅ Experimental setup and procedure</li>
-                                                <li>✅ Data tables with uncertainties</li>
-                                                <li>✅ Analysis with uncertainty propagation</li>
-                                                <li>✅ Discussion of error sources</li>
-                                                <li>✅ Conclusion summarizing findings</li>
-                                                <li>✅ References (if required)</li>
-                                        </ul>
-
-                                        <h4>💡 Pro Tips for Success:</h4>
-                                        <ul>
-                                                <li><strong>Start Early:</strong> LaTeX has a learning curve - give
-                                                        yourself time</li>
-                                                <li><strong>Compile Often:</strong> Check for errors frequently as you
-                                                        build</li>
-                                                <li><strong>Use \label{} and \ref{}:</strong> Let LaTeX handle numbering
-                                                        automatically</li>
-                                                <li><strong>siunitx Package:</strong> Always use \SI{}{} for numbers
-                                                        with units</li>
-                                                <li><strong>Save Versions:</strong> Overleaf tracks changes, but manual
-                                                        saves help too</li>
-                                        </ul>
                                 </section>
 
                                 <section>
