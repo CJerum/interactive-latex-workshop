@@ -24,18 +24,31 @@
 
         <style>
                 /* Compact header design */
-                .reveal h1 { font-size: 1.8em; margin: 0.2em 0; }
-                .reveal h2 { font-size: 1.4em; margin: 0.3em 0; }
-                .reveal h3 { font-size: 1.2em; margin: 0.2em 0; }
-                
+                .reveal h1 {
+                        font-size: 1.8em;
+                        margin: 0.2em 0;
+                }
+
+                .reveal h2 {
+                        font-size: 1.4em;
+                        margin: 0.3em 0;
+                }
+
+                .reveal h3 {
+                        font-size: 1.2em;
+                        margin: 0.2em 0;
+                }
+
                 /* Maximize screen usage */
                 .latex-workshop-container {
                         display: flex;
                         gap: 12px;
                         height: calc(100vh - 110px);
-                        margin: 0 20px; /* use more horizontal space */
+                        margin: 0 20px;
+                        /* use more horizontal space */
                         position: relative;
-                        max-width: none; /* allow full width usage */
+                        max-width: none;
+                        /* allow full width usage */
                 }
 
                 .latex-editor-panel {
@@ -43,9 +56,11 @@
                         display: flex;
                         flex-direction: column;
                         padding: 8px;
-                        min-height: 0; /* allow children to shrink */
+                        min-height: 0;
+                        /* allow children to shrink */
                         overflow: hidden;
                 }
+
                 .latex-output-panel {
                         flex: 1;
                         display: flex;
@@ -78,7 +93,9 @@
                         font-weight: 400;
                         flex-grow: 1;
                         text-align: right;
-                }                /* CodeMirror editor styling */
+                }
+
+                /* CodeMirror editor styling */
                 .latex-editor {
                         flex: 1 1 auto;
                         border: 2px solid #ddd;
@@ -88,9 +105,12 @@
                         background: white;
                         display: flex;
                         flex-direction: column;
-                        min-height: 0; /* allow textarea to shrink inside */
-                        padding: 0; /* ensure CodeMirror can fill */
-                        position: relative; /* for overlay highlighter */
+                        min-height: 0;
+                        /* allow textarea to shrink inside */
+                        padding: 0;
+                        /* ensure CodeMirror can fill */
+                        position: relative;
+                        /* for overlay highlighter */
                 }
 
                 /* Fallback textarea styling - used if CodeMirror fails to load */
@@ -105,11 +125,14 @@
                         resize: none;
                         box-sizing: border-box;
                         outline: none;
-                        background: white; /* will be made transparent when overlay is active */
+                        background: white;
+                        /* will be made transparent when overlay is active */
                         color: #333;
                         word-wrap: break-word;
-                        overflow-wrap: anywhere; /* stronger wrapping for long tokens */
-                        white-space: pre-wrap; /* preserve newlines, wrap long lines */
+                        overflow-wrap: anywhere;
+                        /* stronger wrapping for long tokens */
+                        white-space: pre-wrap;
+                        /* preserve newlines, wrap long lines */
                         tab-size: 4;
                         overflow-x: hidden;
                         overflow-y: auto;
@@ -140,13 +163,37 @@
                 }
 
                 /* Overleaf-esque light theme tweaks on top of 'elegant' */
-                .cm-s-elegant .cm-comment { color: #6a737d; font-style: italic; }
-                .cm-s-elegant .cm-keyword, .cm-s-elegant .cm-atom { color: #005cc5; }
-                .cm-s-elegant .cm-def, .cm-s-elegant .cm-variable-2 { color: #24292e; }
-                .cm-s-elegant .cm-string { color: #032f62; }
-                .cm-s-elegant .cm-bracket { color: #22863a; }
-                .cm-s-elegant .CodeMirror-activeline-background { background: rgba(46,139,87,0.08); }
-                .cm-s-elegant .CodeMirror-matchingbracket { outline: 1px solid rgba(46,139,87,0.4); color: inherit !important; }
+                .cm-s-elegant .cm-comment {
+                        color: #6a737d;
+                        font-style: italic;
+                }
+
+                .cm-s-elegant .cm-keyword,
+                .cm-s-elegant .cm-atom {
+                        color: #005cc5;
+                }
+
+                .cm-s-elegant .cm-def,
+                .cm-s-elegant .cm-variable-2 {
+                        color: #24292e;
+                }
+
+                .cm-s-elegant .cm-string {
+                        color: #032f62;
+                }
+
+                .cm-s-elegant .cm-bracket {
+                        color: #22863a;
+                }
+
+                .cm-s-elegant .CodeMirror-activeline-background {
+                        background: rgba(46, 139, 87, 0.08);
+                }
+
+                .cm-s-elegant .CodeMirror-matchingbracket {
+                        outline: 1px solid rgba(46, 139, 87, 0.4);
+                        color: inherit !important;
+                }
 
                 .latex-editor textarea:focus {
                         background: white;
@@ -190,7 +237,8 @@
                         padding: 20px;
                         background-color: #f9f9f9;
                         display: flex;
-                        align-items: flex-start; /* align to top instead of center */
+                        align-items: flex-start;
+                        /* align to top instead of center */
                         justify-content: center;
                         box-sizing: border-box;
                         overflow-y: auto;
@@ -206,7 +254,8 @@
                         max-height: 100%;
                         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
                         border-radius: 4px;
-                        object-fit: contain; /* maintain aspect ratio */
+                        object-fit: contain;
+                        /* maintain aspect ratio */
                 }
 
                 /* Panel labels */
@@ -295,7 +344,10 @@
                                 font-size: 14px;
                         }
 
-                        .panel-label { position: static; margin-bottom: 5px; }
+                        .panel-label {
+                                position: static;
+                                margin-bottom: 5px;
+                        }
                 }
         </style>
 </head>
@@ -332,7 +384,8 @@
                                                 <div class="latex-editor-panel">
                                                         <div class="panel-label">LaTeX Code</div>
                                                         <div class="latex-editor">
-                                                                <textarea id="editor-1" placeholder="Enter LaTeX code here...">\title{Physics Lab Report: Pendulum Experiment}
+                                                                <textarea id="editor-1"
+                                                                        placeholder="Enter LaTeX code here...">\title{Physics Lab Report: Pendulum Experiment}
 \author{Your Name}
 \date{\today}
 
@@ -352,7 +405,8 @@ This experiment investigates the relationship between pendulum length and period
                                                 <div class="latex-output-panel">
                                                         <div class="panel-label">Rendered Output</div>
                                                         <div class="latex-output" id="output-1">
-                                                                <span class="loading">Click "Compile" to see the output</span>
+                                                                <span class="loading">Click "Compile" to see the
+                                                                        output</span>
                                                         </div>
                                                 </div>
                                         </div>
@@ -393,7 +447,8 @@ Where $T$ is the period, $L$ is the length, and $g = \SI{9.81}{\meter\per\second
                                                 <div class="latex-output-panel">
                                                         <div class="panel-label">Rendered Output</div>
                                                         <div class="latex-output" id="output-2">
-                                                                <span class="loading">Click "Compile & Render" to see the output</span>
+                                                                <span class="loading">Click "Compile & Render" to see
+                                                                        the output</span>
                                                         </div>
                                                 </div>
                                         </div>
@@ -442,7 +497,8 @@ Trial & Length (cm) & Period (s) \\
                                                 <div class="latex-output-panel">
                                                         <div class="panel-label">Rendered Output</div>
                                                         <div class="latex-output" id="output-3">
-                                                                <span class="loading">Click "Compile & Render" to see the output</span>
+                                                                <span class="loading">Click "Compile & Render" to see
+                                                                        the output</span>
                                                         </div>
                                                 </div>
                                         </div>
@@ -491,7 +547,8 @@ From Figure~\ref{fig:period-length}, we observe the expected square-root relatio
                                                 <div class="latex-output-panel">
                                                         <div class="panel-label">Rendered Output</div>
                                                         <div class="latex-output" id="output-4">
-                                                                <span class="loading">Click "Compile & Render" to see the output</span>
+                                                                <span class="loading">Click "Compile & Render" to see
+                                                                        the output</span>
                                                         </div>
                                                 </div>
                                         </div>
@@ -543,7 +600,8 @@ This gives a relative error of:
                                                 <div class="latex-output-panel">
                                                         <div class="panel-label">Rendered Output</div>
                                                         <div class="latex-output" id="output-5">
-                                                                <span class="loading">Click "Compile & Render" to see the output</span>
+                                                                <span class="loading">Click "Compile & Render" to see
+                                                                        the output</span>
                                                         </div>
                                                 </div>
                                         </div>
@@ -622,7 +680,8 @@ This is your complete lab report template!
                                                 <div class="latex-output-panel">
                                                         <div class="panel-label">Rendered Output</div>
                                                         <div class="latex-output" id="preamble-output">
-                                                                <span class="loading">Click "Compile & Render" to see the output</span>
+                                                                <span class="loading">Click "Compile & Render" to see
+                                                                        the output</span>
                                                         </div>
                                                 </div>
                                         </div>
@@ -668,7 +727,8 @@ The objective of this experiment is to:
                                                 <div class="latex-output-panel">
                                                         <div class="panel-label">Rendered Output</div>
                                                         <div class="latex-output" id="abstract-output">
-                                                                <span class="loading">Click "Compile & Render" to see the output</span>
+                                                                <span class="loading">Click "Compile & Render" to see
+                                                                        the output</span>
                                                         </div>
                                                 </div>
                                         </div>
@@ -688,7 +748,8 @@ The objective of this experiment is to:
                                                                 <span>Detailed experimental description</span>
                                                         </div>
                                                         <div class="latex-editor">
-                                                                <textarea id="methods-editor">\section{Experimental Setup and Procedure}
+                                                                <textarea
+                                                                        id="methods-editor">\section{Experimental Setup and Procedure}
 
 \subsection{Apparatus}
 The experimental setup consisted of:
@@ -724,7 +785,8 @@ A plot of $T^2$ vs. $L$ should yield a straight line with slope $m = 4\pi^2/g$, 
                                                 <div class="latex-output-panel">
                                                         <div class="panel-label">Rendered Output</div>
                                                         <div class="latex-output" id="methods-output">
-                                                                <span class="loading">Click "Compile & Render" to see the output</span>
+                                                                <span class="loading">Click "Compile & Render" to see
+                                                                        the output</span>
                                                         </div>
                                                 </div>
                                         </div>
@@ -779,7 +841,8 @@ R^2 &= 0.9987
                                                 <div class="latex-output-panel">
                                                         <div class="panel-label">Rendered Output</div>
                                                         <div class="latex-output" id="data-output">
-                                                                <span class="loading">Click "Compile & Render" to see the output</span>
+                                                                <span class="loading">Click "Compile & Render" to see
+                                                                        the output</span>
                                                         </div>
                                                 </div>
                                         </div>
@@ -839,7 +902,8 @@ Our result agrees excellently with the accepted value, well within our experimen
                                                 <div class="latex-output-panel">
                                                         <div class="panel-label">Rendered Output</div>
                                                         <div class="latex-output" id="analysis-output">
-                                                                <span class="loading">Click "Compile & Render" to see the output</span>
+                                                                <span class="loading">Click "Compile & Render" to see
+                                                                        the output</span>
                                                         </div>
                                                 </div>
                                         </div>
@@ -903,7 +967,8 @@ Taylor, J. R. (1997). \textit{An Introduction to Error Analysis: The Study of Un
                                                 <div class="latex-output-panel">
                                                         <div class="panel-label">Rendered Output</div>
                                                         <div class="latex-output" id="conclusion-output">
-                                                                <span class="loading">Click "Compile & Render" to see the output</span>
+                                                                <span class="loading">Click "Compile & Render" to see
+                                                                        the output</span>
                                                         </div>
                                                 </div>
                                         </div>
@@ -912,15 +977,23 @@ Taylor, J. R. (1997). \textit{An Introduction to Error Analysis: The Study of Un
                                 <section>
                                         <h3>Step 7: Your Complete Template</h3>
                                         <p>Now you have all the pieces! Here's how to assemble them in Overleaf:</p>
-                                        
+
                                         <h4>🎯 Your Action Plan:</h4>
                                         <ol>
-                                                <li><strong>Go to Overleaf:</strong> Visit <a href="https://overleaf.com" target="_blank">overleaf.com</a> and create an account</li>
-                                                <li><strong>Start a New Project:</strong> Choose "Blank Project" or "Article" template</li>
-                                                <li><strong>Copy the Preamble:</strong> Use the document setup from Step 1 as your starting point</li>
-                                                <li><strong>Add Each Section:</strong> Copy and adapt the content from Steps 2-6</li>
-                                                <li><strong>Customize:</strong> Replace "Simple Pendulum" with your actual experiment</li>
-                                                <li><strong>Save as Template:</strong> Keep this as your personal physics lab template!</li>
+                                                <li><strong>Go to Overleaf:</strong> Visit <a
+                                                                href="https://overleaf.com"
+                                                                target="_blank">overleaf.com</a> and create an account
+                                                </li>
+                                                <li><strong>Start a New Project:</strong> Choose "Blank Project" or
+                                                        "Article" template</li>
+                                                <li><strong>Copy the Preamble:</strong> Use the document setup from Step
+                                                        1 as your starting point</li>
+                                                <li><strong>Add Each Section:</strong> Copy and adapt the content from
+                                                        Steps 2-6</li>
+                                                <li><strong>Customize:</strong> Replace "Simple Pendulum" with your
+                                                        actual experiment</li>
+                                                <li><strong>Save as Template:</strong> Keep this as your personal
+                                                        physics lab template!</li>
                                         </ol>
 
                                         <h4>📋 Essential Sections Checklist:</h4>
@@ -939,18 +1012,23 @@ Taylor, J. R. (1997). \textit{An Introduction to Error Analysis: The Study of Un
 
                                         <h4>💡 Pro Tips for Success:</h4>
                                         <ul>
-                                                <li><strong>Start Early:</strong> LaTeX has a learning curve - give yourself time</li>
-                                                <li><strong>Compile Often:</strong> Check for errors frequently as you build</li>
-                                                <li><strong>Use \label{} and \ref{}:</strong> Let LaTeX handle numbering automatically</li>
-                                                <li><strong>siunitx Package:</strong> Always use \SI{}{} for numbers with units</li>
-                                                <li><strong>Save Versions:</strong> Overleaf tracks changes, but manual saves help too</li>
+                                                <li><strong>Start Early:</strong> LaTeX has a learning curve - give
+                                                        yourself time</li>
+                                                <li><strong>Compile Often:</strong> Check for errors frequently as you
+                                                        build</li>
+                                                <li><strong>Use \label{} and \ref{}:</strong> Let LaTeX handle numbering
+                                                        automatically</li>
+                                                <li><strong>siunitx Package:</strong> Always use \SI{}{} for numbers
+                                                        with units</li>
+                                                <li><strong>Save Versions:</strong> Overleaf tracks changes, but manual
+                                                        saves help too</li>
                                         </ul>
                                 </section>
 
                                 <section>
                                         <h2>🎉 Congratulations!</h2>
                                         <p>You now have the tools to create professional physics lab reports!</p>
-                                        
+
                                         <div style="text-align: center; font-size: 1.2em; margin: 2em 0;">
                                                 <p><strong>Remember the key principles:</strong></p>
                                                 <ul style="text-align: left; display: inline-block;">
@@ -971,7 +1049,8 @@ Taylor, J. R. (1997). \textit{An Introduction to Error Analysis: The Study of Un
                                                 <li>Keep building your LaTeX skills!</li>
                                         </ol>
 
-                                        <p style="margin-top: 2em;"><em>Good luck with your physics lab reports! 🚀</em></p>
+                                        <p style="margin-top: 2em;"><em>Good luck with your physics lab reports! 🚀</em>
+                                        </p>
                                 </section>
                         </section>
                 </div>
@@ -1011,7 +1090,7 @@ Taylor, J. R. (1997). \textit{An Introduction to Error Analysis: The Study of Un
                 });
 
                 // Check backend status on load
-                window.addEventListener('load', function() {
+                window.addEventListener('load', function () {
                         checkBackendStatus();
                 });
         </script>

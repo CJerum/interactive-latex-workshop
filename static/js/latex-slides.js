@@ -55,7 +55,7 @@ function initializeCodeMirror() {
                         const storageKey = `latex-slides-${editorId}`;
                         const saved = localStorage.getItem(storageKey);
                         if (saved) textarea.value = saved;
-                        textarea.addEventListener('input', function() {
+                        textarea.addEventListener('input', function () {
                                 localStorage.setItem(storageKey, textarea.value);
                         });
 
@@ -144,7 +144,7 @@ async function compileLatex(editorId, outputId) {
                 const editor = document.getElementById(editorId);
                 latexCode = editor.value.trim();
         }
-        
+
         if (!latexCode) {
                 showError(output, 'Please enter some LaTeX code to compile.');
                 return;
@@ -283,7 +283,7 @@ async function copyToClipboard(editorId) {
                 const editor = document.getElementById(editorId);
                 code = editor.value;
         }
-        
+
         try {
                 await navigator.clipboard.writeText(code);
 
@@ -317,7 +317,7 @@ document.addEventListener('keydown', function (event) {
                                 return;
                         }
                 }
-                
+
                 // Fallback to textarea check
                 const activeElement = document.activeElement;
                 if (activeElement.tagName === 'TEXTAREA' && activeElement.id.startsWith('editor-')) {
@@ -351,7 +351,7 @@ function setupAutoSave() {
 }
 
 // Initialize both CodeMirror and auto-save when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
         setupAutoSave();
         initializeCodeMirror();
         addTooltips();
